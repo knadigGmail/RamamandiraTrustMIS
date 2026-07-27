@@ -39,7 +39,12 @@ Route::resource('users', App\Http\Controllers\UserController::class);
     [BookingController::class, 'checkAvailability']
 )->name('bookings.checkAvailability');
 
+Route::middleware(['auth'])->group(function () {
 
+    Route::resource('settings', App\Http\Controllers\Admin\SettingController::class)
+        ->only(['index','edit','update']);
+
+});
 
 Route::get('/settings', [SettingController::class, 'index'])
     ->name('settings.index');

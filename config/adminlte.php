@@ -555,4 +555,18 @@ return [
     */
 
     'livewire' => false,
+
+    [
+    'text' => 'Configuration',
+    'icon' => 'fas fa-cogs',
+    'submenu' => [
+
+        [
+            'text' => 'Trust Settings',
+            'icon' => 'fas fa-building',
+            'url'  => 'settings',
+        ],
+
+    ],
+],
 ];

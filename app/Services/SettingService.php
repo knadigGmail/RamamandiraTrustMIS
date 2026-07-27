@@ -7,7 +7,27 @@ use Illuminate\Support\Facades\Storage;
 
 class SettingService
 {
-    public function get()
+    
+ public function first()
+    {
+        return Setting::first();
+    }
+
+    public function save(array $data)
+    {
+        $setting = Setting::first();
+
+        if (!$setting) {
+            $setting = new Setting();
+        }
+
+        $setting->fill($data);
+        $setting->save();
+
+        return $setting;
+    }
+
+public function get()
     {
         return Setting::firstOrCreate(
             ['id' => 1],
