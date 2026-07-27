@@ -3,138 +3,353 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="utf-8">
 
-    <title>Donation Receipt</title>
+<title>Donation Receipt</title>
 
-    <style>
+<style>
 
-        body{
-            font-family: DejaVu Sans, sans-serif;
-            font-size:14px;
-        }
+body{
+    font-family: DejaVu Sans, sans-serif;
+    font-size:13px;
+    color:#222;
+}
 
-        table{
-            width:100%;
-            border-collapse:collapse;
-        }
+.header{
+    text-align:center;
+    border-bottom:2px solid #E67E22;
+    padding-bottom:10px;
+    margin-bottom:20px;
+}
 
-        td{
-            border:1px solid #000;
-            padding:8px;
-        }
+.logo{
+    height:80px;
+}
 
-        .title{
-            text-align:center;
-            font-size:22px;
-            font-weight:bold;
-        }
+.trust-name{
+    font-size:24px;
+    font-weight:bold;
+    color:#5D4037;
+}
 
-        .subtitle{
-            text-align:center;
-            margin-bottom:20px;
-        }
+.trust-name-kn{
+    font-size:18px;
+    font-weight:bold;
+}
 
-    </style>
+.subtitle{
+    font-size:12px;
+}
+
+.receipt-title{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    color:#E67E22;
+
+}
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    margin-top:20px;
+
+}
+
+td{
+
+    padding:8px;
+
+    vertical-align:top;
+
+}
+
+.label{
+
+    width:220px;
+
+    font-weight:bold;
+
+}
+
+.amount{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:#5D4037;
+
+}
+
+.footer{
+
+    margin-top:50px;
+
+}
+
+.signature{
+
+    text-align:right;
+
+}
+
+.note{
+
+    margin-top:30px;
+
+    text-align:center;
+
+    font-size:11px;
+
+    color:#777;
+
+}
+
+hr{
+
+    border:none;
+
+    border-top:1px solid #ddd;
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-<table style="border:none; margin-bottom:15px;">
+<div class="header">
 
-    <tr style="border:none;">
+@if(isset($setting) && $setting->logo)
 
-        <td style="border:none; width:110px;">
+<img src="{{ public_path('storage/'.$setting->logo) }}"
+     class="logo">
 
-           {{-- <img src="{{ public_path('images/logo.png') }}" width="90"> --}}
+@endif
 
-        </td>
+<div class="trust-name-kn">
 
-        <td style="border:none; text-align:center;">
+{{ optional($setting)->trust_name_kn }}
 
-            <div style="font-size:24px;font-weight:bold;">
+</div>
 
-                ರಾಮಮಂದಿರ ಟ್ರಸ್ಟ್ (ರಿ.)
+<div class="trust-name">
 
-            </div>
+{{ optional($setting)->trust_name }}
 
-            <div style="font-size:18px;font-weight:bold;">
+</div>
 
-                Ramamandira Trust (R)
+<div class="subtitle">
 
-            </div>
+{{ optional($setting)->address }}
 
-            <div>
+</div>
 
-                Honnavalli, Turuvekere Taluk
+<div class="subtitle">
 
-            </div>
+{{ optional($setting)->phone }}
 
-            <div>
+@if($setting->email)
 
-                Tumakuru District – Karnataka
+|
 
-            </div>
+{{ optional($setting)->email }}
 
-        </td>
+@endif
 
-    </tr>
+</div>
+
+</div>
+
+<div class="receipt-title">
+
+DONATION RECEIPT
+
+</div>
+
+<table>
+
+<tr>
+
+<td class="label">
+
+Receipt No
+
+</td>
+
+<td>
+
+{{ $donation->receipt_no }}
+
+</td>
+
+<td class="label">
+
+Date
+
+</td>
+
+<td>
+
+{{ optional($donation->receipt_date)->format('d-M-Y') }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Donor
+
+</td>
+
+<td colspan="3">
+
+{{ $donation->donor->name ?? '' }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Purpose
+
+</td>
+
+<td colspan="3">
+
+{{ $donation->seva->seva_name ?? 'General Donation' }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Payment Mode
+
+</td>
+
+<td>
+
+{{ $donation->payment_mode }}
+
+</td>
+
+<td class="label">
+
+Reference
+
+</td>
+
+<td>
+
+{{ $donation->reference_no }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Amount
+
+</td>
+
+<td colspan="3" class="amount">
+
+₹ {{ number_format($donation->amount,2) }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<td class="label">
+
+Amount in Words
+
+</td>
+
+<td colspan="3">
+
+{{ $amountInWords ?? '' }}
+
+</td>
+
+</tr>
 
 </table>
 
 <hr>
 
-<h2 style="text-align:center;">
-
-    DONATION RECEIPT
-
-</h2>
+<div class="footer">
 
 <table>
 
-    <tr>
-        <td width="30%">Receipt No</td>
-        <td>{{ $donation->receipt_no }}</td>
-    </tr>
+<tr>
 
-    <tr>
-        <td>Date</td>
-        <td>{{ $donation->receipt_date->format('d-m-Y') }}</td>
-    </tr>
+<td width="30%">
 
-    <tr>
-        <td>Donor</td>
-        <td>{{ $donation->donor->name }}</td>
-    </tr>
+@if(isset($qrCode))
 
-    <tr>
-        <td>Seva</td>
-        <td>{{ $donation->seva->seva_name }}</td>
-    </tr>
+{!! $qrCode !!}
 
-    <tr>
-        <td>Amount</td>
-        <td>₹ {{ number_format($donation->amount,2) }}</td>
-    </tr>
+@endif
 
-    <tr>
-        <td>Payment Mode</td>
-        <td>{{ $donation->payment_mode }}</td>
-    </tr>
+</td>
 
-    <tr>
-        <td>Remarks</td>
-        <td>{{ $donation->remarks }}</td>
-    </tr>
+<td width="40%">
+
+{!! nl2br(e($setting->blessing_message ?? 'May Lord Sri Rama Bless You')) !!}
+
+</td>
+
+<td class="signature">
+
+@if(isset($setting) && $setting->signature)
+
+<img src="{{ public_path('storage/'.$setting->signature) }}"
+     height="60">
+
+@endif
+
+<br>
+
+<b>Authorized Signatory</b>
+
+</td>
+
+</tr>
 
 </table>
 
-<br><br><br>
+</div>
 
-<div style="text-align:right;">
+<div class="note">
 
-    Authorized Signatory
+This is a computer-generated receipt.
 
 </div>
 

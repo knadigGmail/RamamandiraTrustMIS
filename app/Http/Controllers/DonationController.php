@@ -8,10 +8,11 @@ use App\Models\Donation;
 use App\Models\Donor;
 use App\Models\FinancialAccount;
 use App\Models\Seva;
+use App\Models\Setting;          // <-- ADD THIS HERE
 use App\Services\DonationService;
-use Illuminate\Http\Request;
 use App\Services\NumberSeriesService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 class DonationController extends Controller
 {
     protected DonationService $service;
@@ -106,14 +107,31 @@ $receiptNo = $this->numberSeries->next('DON');
             ->route('donations.index')
             ->with('success', 'Donation deleted successfully.');
     }
-    public function receipt(\App\Models\Donation $donation)
+
+
+public function receipt(Donation $donation)
 {
+    $donation->load([
+        'donor',
+        'seva',
+        'financialAccount'
+    ]);
+
+    $setting = Setting::first();
+
     $pdf = Pdf::loadView('receipts.donation', [
-        'donation' => $donation
+        'donation' => $donation,
+        'setting' => $setting,
+        'amountInWords' => $this->amountInWords($donation->amount),
+        'qrCode' => null, // We'll generate this in the next sprint
     ]);
 
     return $pdf->stream(
         'Donation-' . $donation->receipt_no . '.pdf'
     );
+}
+private function amountInWords($amount)
+{
+    return 'Rupees ' . number_format($amount, 2) . ' Only';
 }
 }

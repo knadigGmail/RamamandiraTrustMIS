@@ -164,7 +164,7 @@
     Administration
 </small>
 
-<a href="{{ route('settings.index') }}" class="nav-link text-white">
+<a href="{{ route('settings.edit') }}" class="nav-link text-white">
     <i class="fas fa-building me-2"></i>
     Trust Profile
 </a>

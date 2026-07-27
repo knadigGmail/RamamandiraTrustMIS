@@ -127,6 +127,11 @@ Route::middleware('auth')->group(function () {
         '/settings',
         [SettingController::class, 'update']
     )->name('settings.update');
+
+    Route::get(
+    '/donations/{donation}/receipt',
+    [DonationController::class, 'receipt']
+)->name('donations.receipt');
 });
 
 require __DIR__.'/auth.php';
