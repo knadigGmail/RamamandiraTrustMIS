@@ -33,6 +33,9 @@ class Donation extends Model
 
         'is_cancelled',
 
+         'receipt_no',
+    'receipt_date',
+    'receipt_print_count',
     ];
 
     protected $casts = [
