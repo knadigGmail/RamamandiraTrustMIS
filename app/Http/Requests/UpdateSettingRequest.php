@@ -17,37 +17,20 @@ class UpdateSettingRequest extends FormRequest
 
             'trust_name' => 'required|max:255',
 
-            'address' => 'nullable|max:255',
+            'email' => 'nullable|email',
 
-            'phone' => 'nullable|max:30',
+            'website' => 'nullable|url',
 
-            'email' => 'nullable|email|max:255',
+            'mobile' => 'nullable|max:20',
 
-            'website' => 'nullable|max:255',
+            'phone' => 'nullable|max:20',
 
-            'logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'logo' => 'nullable|image|max:2048',
 
-            'receipt_prefix' => 'required|max:20',
+            'signature' => 'nullable|image|max:2048',
 
-            'receipt_footer' => 'nullable',
+            'qr_code' => 'nullable|image|max:2048',
 
-            'blessing_message' => 'nullable',
-
-            'reply_to_email' => 'nullable|email',
-
-            'whatsapp_number' => 'nullable|max:20',
-
-            'whatsapp_message' => 'nullable',
-
-            'bank_name' => 'nullable|max:255',
-
-            'branch' => 'nullable|max:255',
-
-            'account_number' => 'nullable|max:100',
-
-            'ifsc' => 'nullable|max:20',
-
-            'upi_id' => 'nullable|max:255',
         ];
     }
 }

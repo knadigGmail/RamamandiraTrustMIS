@@ -7,33 +7,15 @@ use Illuminate\Support\Facades\Storage;
 
 class SettingService
 {
-    
- public function first()
-    {
-        return Setting::first();
-    }
-
-    public function save(array $data)
-    {
-        $setting = Setting::first();
-
-        if (!$setting) {
-            $setting = new Setting();
-        }
-
-        $setting->fill($data);
-        $setting->save();
-
-        return $setting;
-    }
-
-public function get()
+    public function get()
     {
         return Setting::firstOrCreate(
             ['id' => 1],
             [
                 'trust_name' => 'RAMAMANDIRA TRUST',
-                'receipt_prefix' => 'RT'
+                'receipt_prefix' => 'RT',
+                'currency' => 'INR',
+                'timezone' => 'Asia/Kolkata',
             ]
         );
     }
@@ -42,19 +24,21 @@ public function get()
     {
         $setting = $this->get();
 
-        if (isset($data['logo'])) {
+        foreach (['logo', 'signature', 'qr_code'] as $file) {
 
-            if ($setting->logo) {
-                Storage::disk('public')->delete($setting->logo);
+            if (isset($data[$file])) {
+
+                if ($setting->$file) {
+                    Storage::disk('public')->delete($setting->$file);
+                }
+
+                $data[$file] = $data[$file]->store('trust', 'public');
             }
-
-            $data['logo'] = $data['logo']->store(
-                'trust',
-                'public'
-            );
         }
 
-        $setting->update($data);
+        // THIS WAS MISSING
+        $setting->fill($data);
+        $setting->save();
 
         return $setting;
     }

@@ -3,18 +3,83 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-<div class="d-flex justify-content-between align-items-center">
-    <div>
-        <h1 class="mb-0">Executive Dashboard</h1>
-        <small class="text-muted">HVL Ramamandira Trust ERP</small>
+
+<div class="card shadow-sm border-0">
+
+    <div class="card-body">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-2 text-center">
+
+                @if(isset($settings) && $settings->logo)
+                    <img src="{{ asset('storage/'.$settings->logo) }}"
+                         style="max-height:90px;">
+                @else
+                    <img src="{{ asset('images/logo.png') }}"
+                         style="max-height:90px;">
+                @endif
+
+            </div>
+
+            <div class="col-md-6">
+
+                <h2 class="mb-1 text-bold text-primary">
+
+                    {{ $settings->trust_name ?? 'RAMAMANDIRA TRUST' }}
+
+                </h2>
+
+                <h5 class="text-muted">
+
+                    Honnavally
+
+                </h5>
+
+                <small>
+
+                    Trust Management ERP System
+
+                </small>
+
+            </div>
+
+            <div class="col-md-4 text-end">
+
+                <span class="badge bg-success">
+
+                    Financial Year
+
+                    {{ $settings->financial_year ?? '2026-27' }}
+
+                </span>
+
+                <br><br>
+
+                <strong>
+
+                    {{ now()->format('d M Y') }}
+
+                </strong>
+
+                <br>
+
+                {{ now()->format('l') }}
+
+                <br><br>
+
+                Welcome,
+
+                <strong>{{ Auth::user()->name }}</strong>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div>
-        <span class="badge bg-primary p-2">
-            {{ now()->format('d M Y') }}
-        </span>
-    </div>
 </div>
+
 @stop
 
 @section('content')

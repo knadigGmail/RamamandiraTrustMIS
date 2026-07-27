@@ -10,76 +10,56 @@ return new class extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
 
-            // General
-            $table->string('trust_name')->nullable();
-            $table->string('trust_name_kn')->nullable();
+            if (!Schema::hasColumn('settings', 'trust_name_kn'))
+                $table->string('trust_name_kn')->nullable()->after('trust_name');
 
-            $table->string('registration_no')->nullable();
-            $table->string('pan_no')->nullable();
-            $table->string('gst_no')->nullable();
+            if (!Schema::hasColumn('settings', 'registration_no'))
+                $table->string('registration_no')->nullable();
 
-            // Contact
-            $table->text('address')->nullable();
-            $table->string('village')->nullable();
-            $table->string('taluk')->nullable();
-            $table->string('district')->nullable();
-            $table->string('state')->nullable();
-            $table->string('pincode')->nullable();
+            if (!Schema::hasColumn('settings', 'pan_no'))
+                $table->string('pan_no')->nullable();
 
-            $table->string('phone')->nullable();
-            $table->string('mobile')->nullable();
-            $table->string('email')->nullable();
-            $table->string('website')->nullable();
+            if (!Schema::hasColumn('settings', 'gst_no'))
+                $table->string('gst_no')->nullable();
 
-            // Branding
-            $table->string('logo')->nullable();
-            $table->string('signature')->nullable();
-            $table->string('qr_code')->nullable();
+            if (!Schema::hasColumn('settings', 'village'))
+                $table->string('village')->nullable();
 
-            $table->text('receipt_footer')->nullable();
+            if (!Schema::hasColumn('settings', 'taluk'))
+                $table->string('taluk')->nullable();
 
-            // Finance
-            $table->string('financial_year')->nullable();
-            $table->string('currency')->default('INR');
-            $table->string('timezone')->default('Asia/Kolkata');
+            if (!Schema::hasColumn('settings', 'district'))
+                $table->string('district')->nullable();
+
+            if (!Schema::hasColumn('settings', 'state'))
+                $table->string('state')->nullable();
+
+            if (!Schema::hasColumn('settings', 'pincode'))
+                $table->string('pincode')->nullable();
+
+            if (!Schema::hasColumn('settings', 'mobile'))
+                $table->string('mobile')->nullable();
+
+            if (!Schema::hasColumn('settings', 'signature'))
+                $table->string('signature')->nullable();
+
+            if (!Schema::hasColumn('settings', 'qr_code'))
+                $table->string('qr_code')->nullable();
+
+            if (!Schema::hasColumn('settings', 'financial_year'))
+                $table->string('financial_year')->nullable();
+
+            if (!Schema::hasColumn('settings', 'currency'))
+                $table->string('currency')->default('INR');
+
+            if (!Schema::hasColumn('settings', 'timezone'))
+                $table->string('timezone')->default('Asia/Kolkata');
 
         });
     }
 
     public function down(): void
     {
-        Schema::table('settings', function (Blueprint $table) {
-
-            $table->dropColumn([
-                'trust_name',
-                'trust_name_kn',
-                'registration_no',
-                'pan_no',
-                'gst_no',
-
-                'address',
-                'village',
-                'taluk',
-                'district',
-                'state',
-                'pincode',
-
-                'phone',
-                'mobile',
-                'email',
-                'website',
-
-                'logo',
-                'signature',
-                'qr_code',
-
-                'receipt_footer',
-
-                'financial_year',
-                'currency',
-                'timezone'
-            ]);
-
-        });
+        // Leave empty during development
     }
 };

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateSettingRequest;
+use App\Models\Setting;
 use App\Services\SettingService;
 
 class SettingController extends Controller
@@ -14,19 +15,25 @@ class SettingController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    /**
+     * Display the Trust Settings page.
+     */
+    public function edit()
     {
         $setting = $this->service->get();
 
-        return view('settings.index', compact('setting'));
+        return view('settings.edit', compact('setting'));
     }
 
+    /**
+     * Update Trust Settings.
+     */
     public function update(UpdateSettingRequest $request)
     {
         $this->service->update($request->validated());
 
         return redirect()
-            ->route('settings.index')
-            ->with('success', 'Trust Profile updated successfully.');
+            ->route('settings.edit')
+            ->with('success', 'Trust Settings updated successfully.');
     }
 }
