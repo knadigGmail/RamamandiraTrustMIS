@@ -15,7 +15,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\FinancialAccountController;
 use App\Http\Controllers\SevaController;
 use App\Http\Controllers\DonationController;
-
+use App\Http\Controllers\PaymentVoucherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -128,10 +128,36 @@ Route::middleware('auth')->group(function () {
         [SettingController::class, 'update']
     )->name('settings.update');
 
+
+
+Route::resource('payment-vouchers', PaymentVoucherController::class);
+
+Route::post(
+    'payment-vouchers/{paymentVoucher}/approve',
+    [PaymentVoucherController::class, 'approve']
+)->name('payment-vouchers.approve');
+
+Route::get(
+    'payment-vouchers/{paymentVoucher}/pdf',
+    [PaymentVoucherController::class, 'pdf']
+)->name('payment-vouchers.pdf');
+
+
     Route::get(
     '/donations/{donation}/receipt',
     [DonationController::class, 'receipt']
 )->name('donations.receipt');
+Route::resource('account-heads', App\Http\Controllers\AccountHeadController::class);
 });
+Route::view('/', 'website.home')->name('home');
+
+Route::view('/about', 'website.about')->name('about');
+Route::view('/heritage', 'website.heritage')->name('heritage');
+Route::view('/temple', 'website.temple')->name('temple');
+Route::view('/community', 'website.community')->name('community');
+Route::view('/events', 'website.events')->name('events');
+Route::view('/gallery', 'website.gallery')->name('gallery');
+Route::view('/donate', 'website.donate')->name('donate');
+Route::view('/contact', 'website.contact')->name('contact');
 
 require __DIR__.'/auth.php';

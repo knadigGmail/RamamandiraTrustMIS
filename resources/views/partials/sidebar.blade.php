@@ -87,7 +87,29 @@
        <small class="text-uppercase text-warning px-3 fw-bold">
     Finance
 </small>
+<li class="nav-item">
 
+    <a href="{{ route('payment-vouchers.index') }}"
+       class="nav-link">
+
+        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+
+        <p>
+
+            Payment Vouchers
+
+        </p>
+
+    </a>
+
+</li>
+<li class="nav-item">
+    <a href="{{ route('account-heads.index') }}"
+       class="nav-link {{ request()->routeIs('account-heads.*') ? 'active' : '' }}">
+        <i class="fas fa-sitemap nav-icon"></i>
+        <p>Chart of Accounts</p>
+    </a>
+</li>
 <a href="{{ route('financial-accounts.index') }}" class="nav-link text-white">
     <i class="fas fa-university me-2"></i>
     Financial Accounts
