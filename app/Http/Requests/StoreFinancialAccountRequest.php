@@ -11,53 +11,58 @@ class StoreFinancialAccountRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
-    {
-        return [
+  public function rules(): array
+{
+    return [
 
-            'account_code' => 'required|string|max:20|unique:financial_accounts,account_code',
+        'account_code' => 'required|string|max:20|unique:financial_accounts,account_code',
 
-            'account_name' => 'required|string|max:255',
+        'account_name' => 'required|string|max:255',
 
-            'account_type' => 'required|in:Bank,Cash,UPI',
+        'account_type' => 'required|in:Bank,Cash,UPI',
 
-            'bank_name' => 'nullable|string|max:255',
+        'account_head_id' => 'required|exists:account_heads,id',
 
-            'branch' => 'nullable|string|max:255',
+        'bank_name' => 'nullable|string|max:255',
 
-            'account_holder' => 'nullable|string|max:255',
+        'branch' => 'nullable|string|max:255',
 
-            'account_number' => 'nullable|string|max:100',
+        'account_holder' => 'nullable|string|max:255',
 
-            'ifsc' => 'nullable|string|max:20',
+        'account_number' => 'nullable|string|max:100',
 
-            'upi_id' => 'nullable|string|max:255',
+        'ifsc' => 'nullable|string|max:20',
 
-            'opening_balance' => 'required|numeric|min:0',
+        'upi_id' => 'nullable|string|max:255',
 
-            'remarks' => 'nullable|string',
+        'opening_balance' => 'required|numeric|min:0',
 
-            'qr_code' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        'remarks' => 'nullable|string',
 
-            'is_default' => 'nullable|boolean',
+        'qr_code' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
 
-            'is_active' => 'nullable|boolean',
+        'is_default' => 'nullable|boolean',
 
-        ];
-    }
+        'is_active' => 'nullable|boolean',
+    ];
+}
 
-    public function messages(): array
-    {
-        return [
+   public function messages(): array
+{
+    return [
 
-            'account_code.required' => 'Account Code is required.',
+        'account_code.required' => 'Account Code is required.',
 
-            'account_name.required' => 'Account Name is required.',
+        'account_name.required' => 'Account Name is required.',
 
-            'account_type.required' => 'Please select Account Type.',
+        'account_type.required' => 'Please select Account Type.',
 
-            'opening_balance.required' => 'Opening Balance is required.',
+        'account_head_id.required' => 'Please select a Chart of Account.',
 
-        ];
-    }
+        'account_head_id.exists' => 'Selected Chart of Account is invalid.',
+
+        'opening_balance.required' => 'Opening Balance is required.',
+
+    ];
+}
 }

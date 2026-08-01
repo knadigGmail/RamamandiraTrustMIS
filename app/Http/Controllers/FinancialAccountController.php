@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateFinancialAccountRequest;
 use App\Models\FinancialAccount;
 use App\Services\FinancialAccountService;
 use Illuminate\Http\Request;
-
+use App\Models\AccountHead;
 class FinancialAccountController extends Controller
 {
     protected FinancialAccountService $service;
@@ -56,17 +56,18 @@ class FinancialAccountController extends Controller
     /**
      * Create Form
      */
-    public function create()
-    {
-        $next = FinancialAccount::count() + 1;
+  public function create()
+{
+    return view('financial_accounts.create', [
 
-        $accountCode = sprintf('FA-%04d', $next);
+        'accountCode' => $this->service->nextCode(),
 
-        return view(
-            'financial_accounts.create',
-            compact('accountCode')
-        );
-    }
+        'accountHeads' => AccountHead::where('is_active', true)
+            ->orderBy('account_name')
+            ->get(),
+
+    ]);
+}
 
     /**
      * Save
@@ -103,13 +104,18 @@ class FinancialAccountController extends Controller
     /**
      * Edit Form
      */
-    public function edit(FinancialAccount $financialAccount)
-    {
-        return view(
-            'financial_accounts.edit',
-            compact('financialAccount')
-        );
-    }
+   public function edit(FinancialAccount $financialAccount)
+{
+    return view('financial_accounts.edit', [
+
+        'financialAccount' => $financialAccount,
+
+        'accountHeads' => AccountHead::where('is_active', true)
+            ->orderBy('account_name')
+            ->get(),
+
+    ]);
+}
 
     /**
      * Update

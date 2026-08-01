@@ -8,8 +8,11 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1">
 
+    <meta name="csrf-token"
+          content="{{ csrf_token() }}">
+
     <title>
-        @yield('title','HVL Ramamandira Trust MIS')
+        @yield('title', 'Ramamandira ERP')
     </title>
 
     @vite([
@@ -18,46 +21,46 @@
     ])
 
     <!-- Bootstrap -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
           rel="stylesheet">
 
     <!-- Font Awesome -->
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           rel="stylesheet">
 
 </head>
 
-<body class="bg-light">
+<body class="erp-body">
 
-<div class="container-fluid">
+<div class="wrapper">
 
-    <div class="row">
+    <!-- Sidebar -->
 
-        <!-- Sidebar -->
+    @include('partials.sidebar')
 
-        <div class="col-md-2 p-0">
+    <!-- Main Content -->
 
-            @include('partials.sidebar')
+    <div class="main-content">
 
-        </div>
+        <!-- Navbar -->
 
-        <!-- Main Content -->
+        @include('partials.navbar')
 
-        <div class="col-md-10 p-0">
+        <!-- Page Content -->
 
-            @include('partials.navbar')
+        <div class="content-wrapper">
 
-            <main class="p-4">
+            @include('partials.alerts')
 
-                @include('partials.alerts')
-
-                @yield('content')
-
-            </main>
-
-            @include('partials.footer')
+            @yield('content')
 
         </div>
+
+        <!-- Footer -->
+
+        @include('partials.footer')
 
     </div>
 

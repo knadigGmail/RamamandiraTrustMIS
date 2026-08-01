@@ -1,208 +1,213 @@
-<aside class="bg-dark text-white" style="width:270px;min-height:100vh;overflow-y:auto;">
+<aside class="sidebar bg-dark text-white">
 
-    <div class="p-3 border-bottom text-center">
+    <!-- Logo -->
+
+    <div class="sidebar-header text-center border-bottom">
 
         <img src="{{ asset('images/logo.png') }}"
-             alt="Logo"
-             style="height:70px;"
-             class="mb-2">
+             class="sidebar-logo mb-2"
+             alt="Logo">
 
-        <h5 class="text-warning mb-0">
+        <h5 class="mb-0 text-warning fw-bold">
             Ramamandira Trust
         </h5>
 
         <small class="text-light">
-            Management Information System
+            ERP System
         </small>
 
     </div>
 
-    <nav class="nav flex-column mt-2">
+    <div class="sidebar-menu">
+
+        <!-- Dashboard -->
 
         <a href="{{ route('dashboard') }}"
-           class="nav-link text-white">
+           class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+
             <i class="fas fa-gauge-high me-2"></i>
+
             Dashboard
+
         </a>
 
-        <hr class="text-secondary">
+        <!-- Masters -->
 
-        <small class="text-uppercase text-warning px-3 fw-bold">
-            Masters
-        </small>
+        <div class="sidebar-section">
 
-        <a href="{{ route('trustees.index') }}" class="nav-link text-white">
-            <i class="fas fa-users me-2"></i> Trustees
-        </a>
+            <div class="sidebar-title">
+                Masters
+            </div>
 
-        <a href="{{ route('users.index') }}" class="nav-link text-white">
-            <i class="fas fa-user-shield me-2"></i> Users
-        </a>
+            <a href="{{ route('trustees.index') }}"
+               class="sidebar-link {{ request()->routeIs('trustees.*') ? 'active' : '' }}">
 
-        <a href="#" class="nav-link text-white">
-            <i class="fas fa-user-lock me-2"></i> Roles
-        </a>
+                <i class="fas fa-users me-2"></i>
+                Trustees
 
-        <a href="{{ route('employees.index') }}" class="nav-link text-white">
-            <i class="fas fa-user-tie me-2"></i> Employees
-        </a>
+            </a>
 
-        <a href="{{ route('customers.index') }}" class="nav-link text-white">
-            <i class="fas fa-address-book me-2"></i> Customers
-        </a>
+            <a href="{{ route('users.index') }}"
+               class="sidebar-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
 
-        <a href="{{ route('halls.index') }}" class="nav-link text-white">
-            <i class="fas fa-building me-2"></i> Halls
-        </a>
+                <i class="fas fa-user-shield me-2"></i>
+                Users
 
-        <a href="{{ route('donors.index') }}" class="nav-link text-white">
-            <i class="fas fa-hand-holding-heart me-2"></i> Donors
-        </a>
+            </a>
 
-        <hr class="text-secondary">
+            <a href="{{ route('employees.index') }}"
+               class="sidebar-link {{ request()->routeIs('employees.*') ? 'active' : '' }}">
 
-        <small class="text-uppercase text-warning px-3 fw-bold">
-            Bookings
-        </small>
+                <i class="fas fa-user-tie me-2"></i>
+                Employees
 
-        <a href="{{ route('bookings.create') }}" class="nav-link text-white">
-            <i class="fas fa-calendar-plus me-2"></i> New Booking
-        </a>
+            </a>
 
-        <a href="{{ route('bookings.index') }}" class="nav-link text-white">
-            <i class="fas fa-calendar-check me-2"></i> Booking Register
-        </a>
+            <a href="{{ route('customers.index') }}"
+               class="sidebar-link {{ request()->routeIs('customers.*') ? 'active' : '' }}">
 
-        <a href="#" class="nav-link text-white">
-    <i class="fas fa-calendar-days me-2"></i> Booking Calendar
-    <span class="badge bg-warning ms-2">Coming Soon</span>
-</a>
+                <i class="fas fa-address-book me-2"></i>
+                Customers
 
-        <a href="#" class="nav-link text-white">
-            <i class="fas fa-door-open me-2"></i> Hall Availability
-        </a>
+            </a>
 
-        <hr class="text-secondary">
+            <a href="{{ route('donors.index') }}"
+               class="sidebar-link {{ request()->routeIs('donors.*') ? 'active' : '' }}">
 
-       <small class="text-uppercase text-warning px-3 fw-bold">
-    Finance
-</small>
-<li class="nav-item">
+                <i class="fas fa-hand-holding-heart me-2"></i>
+                Donors
 
-    <a href="{{ route('payment-vouchers.index') }}"
-       class="nav-link">
+            </a>
 
-        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+            <a href="{{ route('halls.index') }}"
+               class="sidebar-link {{ request()->routeIs('halls.*') ? 'active' : '' }}">
 
-        <p>
+                <i class="fas fa-building me-2"></i>
+                Halls
 
-            Payment Vouchers
+            </a>
 
-        </p>
+        </div>
 
-    </a>
+        <!-- Bookings -->
 
-</li>
-<li class="nav-item">
-    <a href="{{ route('account-heads.index') }}"
-       class="nav-link {{ request()->routeIs('account-heads.*') ? 'active' : '' }}">
-        <i class="fas fa-sitemap nav-icon"></i>
-        <p>Chart of Accounts</p>
-    </a>
-</li>
-<a href="{{ route('financial-accounts.index') }}" class="nav-link text-white">
-    <i class="fas fa-university me-2"></i>
-    Financial Accounts
-</a>
+        <div class="sidebar-section">
 
-<a href="#" class="nav-link text-white">
+            <div class="sidebar-title">
+                Bookings
+            </div>
+
+            <a href="{{ route('bookings.create') }}"
+               class="sidebar-link">
+
+                <i class="fas fa-calendar-plus me-2"></i>
+                New Booking
+
+            </a>
+
+            <a href="{{ route('bookings.index') }}"
+               class="sidebar-link {{ request()->routeIs('bookings.*') ? 'active' : '' }}">
+
+                <i class="fas fa-calendar-check me-2"></i>
+                Booking Register
+
+            </a>
+
+        </div>
+
+        <!-- Finance -->
+
+        <div class="sidebar-section">
+
+            <div class="sidebar-title">
+                Finance
+            </div>
+
+            <a href="{{ route('account-heads.index') }}"
+               class="sidebar-link {{ request()->routeIs('account-heads.*') ? 'active' : '' }}">
+
+                <i class="fas fa-sitemap me-2"></i>
+                Chart of Accounts
+
+            </a>
+
+            <a href="{{ route('financial-accounts.index') }}"
+               class="sidebar-link {{ request()->routeIs('financial-accounts.*') ? 'active' : '' }}">
+
+                <i class="fas fa-university me-2"></i>
+                Financial Accounts
+
+            </a>
+
+            <a href="{{ route('payment-vouchers.index') }}"
+               class="sidebar-link {{ request()->routeIs('payment-vouchers.*') ? 'active' : '' }}">
+
+                <i class="fas fa-file-invoice-dollar me-2"></i>
+                Payment Vouchers
+
+            </a>
+<a href="{{ route('receipt-vouchers.index') }}"
+   class="sidebar-link {{ request()->routeIs('receipt-vouchers.*') ? 'active' : '' }}">
+
     <i class="fas fa-receipt me-2"></i>
-    Receipts
-    <span class="badge bg-warning ms-2">Soon</span>
+
+    Receipt Vouchers
+
 </a>
+<a href="{{ route('ledger.index') }}"
+   class="sidebar-link {{ request()->routeIs('ledger.*') ? 'active' : '' }}">
 
-<a href="#" class="nav-link text-white">
-    <i class="fas fa-money-bill-wave me-2"></i>
-    Payments
-    <span class="badge bg-warning ms-2">Soon</span>
+    <i class="fas fa-book me-2"></i>
+
+    General Ledger
+
 </a>
+        </div>
 
-<a href="#" class="nav-link text-white">
-    <i class="fas fa-file-invoice-dollar me-2"></i>
-    Expenses
-    <span class="badge bg-warning ms-2">Soon</span>
-</a>
+        <!-- Temple -->
 
-        <hr class="text-secondary">
-<hr class="text-secondary">
+        <div class="sidebar-section">
 
-<small class="text-uppercase text-warning px-3 fw-bold">
-    Donations
-</small>
+            <div class="sidebar-title">
+                Temple
+            </div>
 
-<a href="{{ route('sevas.index') }}" class="nav-link text-white">
-    <i class="fas fa-hands-praying me-2"></i>
-    Seva Master
-</a>
-<a href="{{ route('donations.index') }}" class="nav-link text-white">
-    <i class="fas fa-hand-holding-heart me-2"></i>
-    Donation Entry
-</a>
-        <small class="text-uppercase text-warning px-3 fw-bold">
-            Temple Activities
-        </small>
+            <a href="{{ route('donations.index') }}"
+               class="sidebar-link {{ request()->routeIs('donations.*') ? 'active' : '' }}">
 
-        <a href="#" class="nav-link text-white">
-            <i class="fas fa-place-of-worship me-2"></i> Ramotsava
-        </a>
+                <i class="fas fa-hand-holding-heart me-2"></i>
+                Donations
 
-        <a href="#" class="nav-link text-white">
-            <i class="fas fa-om me-2"></i> Kalyanotsava
-        </a>
+            </a>
 
-        <hr class="text-secondary">
+            <a href="{{ route('sevas.index') }}"
+               class="sidebar-link {{ request()->routeIs('sevas.*') ? 'active' : '' }}">
 
-        <small class="text-uppercase text-warning px-3 fw-bold">
-            Merit Awards
-        </small>
+                <i class="fas fa-hands-praying me-2"></i>
+                Sevas
 
-        <a href="#" class="nav-link text-white">
-            <i class="fas fa-award me-2"></i> Merit Awards
-        </a>
+            </a>
 
-        <hr class="text-secondary">
+        </div>
 
-        <small class="text-uppercase text-warning px-3 fw-bold">
-            Reports
-        </small>
+        <!-- Administration -->
 
-        <a href="#" class="nav-link text-white">
-            <i class="fas fa-chart-column me-2"></i> Reports
-        </a>
+        <div class="sidebar-section">
 
-        <hr class="text-secondary">
+            <div class="sidebar-title">
+                Administration
+            </div>
 
-       <small class="text-uppercase text-warning px-3 fw-bold">
-    Administration
-</small>
+            <a href="{{ route('settings.edit') }}"
+               class="sidebar-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
 
-<a href="{{ route('settings.edit') }}" class="nav-link text-white">
-    <i class="fas fa-building me-2"></i>
-    Trust Profile
-</a>
+                <i class="fas fa-gear me-2"></i>
+                Trust Profile
 
-<a href="#" class="nav-link text-white">
-    <i class="fas fa-user-shield me-2"></i>
-    User Management
-    <span class="badge bg-warning ms-2">Soon</span>
-</a>
+            </a>
 
-<a href="#" class="nav-link text-white">
-    <i class="fas fa-gear me-2"></i>
-    System Settings
-    <span class="badge bg-warning ms-2">Soon</span>
-</a>
+        </div>
 
-    </nav>
+    </div>
 
 </aside>

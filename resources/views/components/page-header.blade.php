@@ -1,18 +1,30 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h2>{{ $title }}</h2>
+    <div>
 
-    @isset($createRoute)
+        <h2 class="fw-bold text-dark mb-1">
+            {{ $title }}
+        </h2>
 
-    <a href="{{ route($createRoute) }}"
-       class="btn btn-success">
+        @if(isset($subtitle))
+            <p class="text-muted mb-0">
+                {{ $subtitle }}
+            </p>
+        @endif
 
-        <i class="fas fa-plus"></i>
+    </div>
 
-        {{ $buttonText }}
+    @if(isset($buttonText))
 
-    </a>
+        <a href="{{ $buttonLink }}"
+           class="btn btn-primary shadow-sm">
 
-    @endisset
+            <i class="fas fa-plus me-2"></i>
+
+            {{ $buttonText }}
+
+        </a>
+
+    @endif
 
 </div>

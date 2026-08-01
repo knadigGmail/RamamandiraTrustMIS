@@ -44,6 +44,7 @@ class UpdateFinancialAccountRequest extends FormRequest
             'is_default' => 'nullable|boolean',
 
             'is_active' => 'nullable|boolean',
+            'account_head_id' => 'required|exists:account_heads,id',
 
         ];
     }

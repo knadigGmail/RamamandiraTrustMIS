@@ -56,7 +56,7 @@ class PaymentVoucher extends Model
 
     public function accountHead()
     {
-        return $this->belongsTo(AccountHead::class);
+    return $this->belongsTo(AccountHead::class, 'account_head_id');
     }
 
     public function financialAccount()

@@ -16,6 +16,7 @@ use App\Http\Controllers\FinancialAccountController;
 use App\Http\Controllers\SevaController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\PaymentVoucherController;
+use App\Http\Controllers\ReceiptVoucherController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -80,6 +81,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('financial-accounts', FinancialAccountController::class);
 
     Route::resource('sevas', SevaController::class);
+    Route::resource('receipt-vouchers', ReceiptVoucherController::class);
 
     /*
     |--------------------------------------------------------------------------
@@ -149,6 +151,11 @@ Route::get(
 )->name('donations.receipt');
 Route::resource('account-heads', App\Http\Controllers\AccountHeadController::class);
 });
+
+Route::get(
+    '/ledger',
+    [App\Http\Controllers\LedgerController::class, 'index']
+)->name('ledger.index');
 Route::view('/', 'website.home')->name('home');
 
 Route::view('/about', 'website.about')->name('about');

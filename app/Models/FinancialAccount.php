@@ -9,36 +9,38 @@ class FinancialAccount extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+   protected $fillable = [
 
-        'account_code',
+    'account_code',
 
-        'account_name',
+    'account_name',
 
-        'account_type',
+    'account_type',
 
-        'bank_name',
+    'account_head_id',
 
-        'branch',
+    'bank_name',
 
-        'account_holder',
+    'branch',
 
-        'account_number',
+    'account_holder',
 
-        'ifsc',
+    'account_number',
 
-        'upi_id',
+    'ifsc',
 
-        'qr_code',
+    'upi_id',
 
-        'opening_balance',
+    'qr_code',
 
-        'is_default',
+    'opening_balance',
 
-        'is_active',
+    'is_default',
 
-        'remarks',
-    ];
+    'is_active',
+
+    'remarks',
+];
 
     protected $casts = [
 
@@ -75,5 +77,9 @@ public function getQrCodeUrlAttribute()
     }
 
     return asset('storage/'.$this->qr_code);
+}
+public function accountHead()
+{
+    return $this->belongsTo(AccountHead::class);
 }
 }

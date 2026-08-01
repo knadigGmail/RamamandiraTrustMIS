@@ -28,7 +28,7 @@ class PaymentVoucherController extends Controller
     /**
      * Display a listing.
      */
-    public function index(Request $request)
+   public function index(Request $request)
 {
     $query = PaymentVoucher::with([
         'accountHead',
@@ -37,44 +37,124 @@ class PaymentVoucherController extends Controller
         'approver'
     ]);
 
-    // Search by Voucher No or Payee
+    /*
+    |--------------------------------------------------------------------------
+    | Search
+    |--------------------------------------------------------------------------
+    */
+
     if ($request->filled('search')) {
-        $search = $request->search;
+
+        $search = trim($request->search);
 
         $query->where(function ($q) use ($search) {
+
             $q->where('voucher_no', 'like', "%{$search}%")
-              ->orWhere('payee_name', 'like', "%{$search}%");
+              ->orWhere('payee_name', 'like', "%{$search}%")
+              ->orWhere('reference_no', 'like', "%{$search}%");
+
         });
+
     }
 
-    // Filter by Status
+    /*
+    |--------------------------------------------------------------------------
+    | Status
+    |--------------------------------------------------------------------------
+    */
+
     if ($request->filled('status')) {
+
         $query->where('status', $request->status);
+
     }
 
-    // Filter by Payment Mode
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Mode
+    |--------------------------------------------------------------------------
+    */
+
     if ($request->filled('payment_mode')) {
+
         $query->where('payment_mode', $request->payment_mode);
+
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Date Filters
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('from')) {
+
+        $query->whereDate(
+            'voucher_date',
+            '>=',
+            $request->from
+        );
+
+    }
+
+    if ($request->filled('to')) {
+
+        $query->whereDate(
+            'voucher_date',
+            '<=',
+            $request->to
+        );
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Statistics
+    |--------------------------------------------------------------------------
+    */
+
+    $statistics = [
+
+        'total' => PaymentVoucher::count(),
+
+        'pending' => PaymentVoucher::where(
+            'status',
+            'Pending'
+        )->count(),
+
+        'approved' => PaymentVoucher::where(
+            'status',
+            'Approved'
+        )->count(),
+
+        'cancelled' => PaymentVoucher::where(
+            'status',
+            'Cancelled'
+        )->count(),
+
+        'totalAmount' => PaymentVoucher::sum('amount'),
+
+    ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Register
+    |--------------------------------------------------------------------------
+    */
 
     $paymentVouchers = $query
-        ->latest('voucher_date')
+        ->orderByDesc('voucher_date')
+        ->orderByDesc('id')
         ->paginate(15)
         ->withQueryString();
 
-    return view('finance.payment-vouchers.index', [
-        'paymentVouchers' => $paymentVouchers,
-
-        'totalVouchers' => PaymentVoucher::count(),
-
-        'draftCount' => PaymentVoucher::where('status', 'Draft')->count(),
-
-        'approvedCount' => PaymentVoucher::where('status', 'Approved')->count(),
-
-        'cancelledCount' => PaymentVoucher::where('status', 'Cancelled')->count(),
-
-        'totalAmount' => PaymentVoucher::sum('amount'),
-    ]);
+    return view(
+        'payment-vouchers.index',
+        compact(
+            'paymentVouchers',
+            'statistics'
+        )
+    );
 }
 
     /**
@@ -105,7 +185,7 @@ class PaymentVoucherController extends Controller
         $this->service->create($request->validated());
 
         return redirect()
-            ->route('finance.payment-vouchers.index')
+            ->route('payment-vouchers.index')
             ->with('success', 'Payment Voucher created successfully.');
     }
 
@@ -155,7 +235,7 @@ class PaymentVoucherController extends Controller
         );
 
         return redirect()
-            ->route('finance.payment-vouchers.index')
+            ->route('payment-vouchers.index')
             ->with('success', 'Payment Voucher updated successfully.');
     }
 
@@ -167,7 +247,7 @@ class PaymentVoucherController extends Controller
         $this->service->delete($paymentVoucher);
 
         return redirect()
-            ->route('finance.payment-vouchers.index')
+            ->route('payment-vouchers.index')
             ->with('success', 'Payment Voucher deleted successfully.');
     }
 
@@ -175,29 +255,36 @@ class PaymentVoucherController extends Controller
      * Approve voucher.
      */
     public function approve(PaymentVoucher $paymentVoucher)
-    {
-        $this->service->approve($paymentVoucher);
+{
+    if ($paymentVoucher->status === 'Approved') {
 
         return back()->with(
-            'success',
-            'Payment Voucher approved successfully.'
+            'warning',
+            'Voucher has already been approved.'
         );
     }
+
+    $this->service->approve($paymentVoucher);
+
+    return back()->with(
+        'success',
+        'Payment Voucher approved successfully.'
+    );
+}
 
     /**
      * Print PDF.
      */
-    public function pdf(PaymentVoucher $paymentVoucher)
-    {
-        $pdf = Pdf::loadView(
-            'receipts.payment-voucher',
-            compact('paymentVoucher')
-        );
+   public function pdf(PaymentVoucher $paymentVoucher)
+{
+    $paymentVoucher->load([
+        'accountHead',
+        'financialAccount',
+    ]);
 
-        return $pdf->stream(
-            'PaymentVoucher-' .
-            $paymentVoucher->voucher_no .
-            '.pdf'
-        );
-    }
+    return view(
+        'payment-vouchers.pdf',
+        compact('paymentVoucher')
+    );
+}
 }

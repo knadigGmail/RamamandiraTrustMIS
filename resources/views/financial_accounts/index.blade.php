@@ -26,15 +26,7 @@
 
     </div>
 
-    @if(session('success'))
-
-        <div class="alert alert-success">
-
-            {{ session('success') }}
-
-        </div>
-
-    @endif
+   
 
     <form method="GET"
           action="{{ route('financial-accounts.index') }}"

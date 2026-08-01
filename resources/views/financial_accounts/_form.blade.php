@@ -63,7 +63,37 @@
                 @enderror
 
             </div>
+<div class="col-md-4 mb-3">
 
+    <label class="form-label">
+        Chart of Account
+        <span class="text-danger">*</span>
+    </label>
+
+    <select name="account_head_id"
+            class="form-select"
+            required>
+
+        <option value="">Select Account Head</option>
+
+        @foreach($accountHeads as $head)
+
+            <option value="{{ $head->id }}"
+                {{ old('account_head_id', $financialAccount->account_head_id ?? '') == $head->id ? 'selected' : '' }}>
+
+                {{ $head->account_code }} - {{ $head->account_name }}
+
+            </option>
+
+        @endforeach
+
+    </select>
+
+    @error('account_head_id')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+
+</div>
         </div>
 
         <hr>

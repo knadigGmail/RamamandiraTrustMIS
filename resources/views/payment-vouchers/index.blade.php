@@ -1,31 +1,244 @@
-@extends('adminlte::page')
+@extends('layouts.app')
 
-@section('title', 'Payment Vouchers')
+@section('title','Payment Vouchers')
+@section('page-title','Payment Vouchers')
 
 @section('content')
 
-<div class="card">
+<x-page-header
+    title="Payment Vouchers"
+    subtitle="Manage payment vouchers"
+    buttonText="New Voucher"
+    :buttonLink="route('payment-vouchers.create')" />
 
-    <div class="card-header d-flex justify-content-between">
+<div class="row mb-4">
 
-        <h3 class="card-title">
-            Payment Vouchers
-        </h3>
+    <div class="col-lg-3 col-md-6 mb-3">
 
-        <a href="{{ route('payment-vouchers.create') }}"
-           class="btn btn-success">
+        <div class="card shadow-sm border-0">
 
-            <i class="fas fa-plus"></i>
+            <div class="card-body">
 
-            New Voucher
+                <small class="text-muted">Total Vouchers</small>
 
-        </a>
+                <h2 class="fw-bold mb-0">
+                    {{ $paymentVouchers->total() }}
+                </h2>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="card-body table-responsive">
+    <div class="col-lg-3 col-md-6 mb-3">
 
-        <table class="table table-bordered table-hover">
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Pending Approval
+                </small>
+
+                <h2 class="fw-bold text-warning mb-0">
+                    {{ $paymentVouchers->where('status','Pending')->count() }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Approved
+                </small>
+
+                <h2 class="fw-bold text-success mb-0">
+                    {{ $paymentVouchers->where('status','Approved')->count() }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 col-md-6 mb-3">
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-body">
+
+                <small class="text-muted">
+                    Cancelled
+                </small>
+
+                <h2 class="fw-bold text-danger mb-0">
+                    {{ $paymentVouchers->where('status','Cancelled')->count() }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<div class="card shadow-sm mb-3">
+
+    <div class="card-header bg-white">
+        <strong>
+            <i class="fas fa-search"></i>
+            Search Payment Vouchers
+        </strong>
+    </div>
+
+    <div class="card-body">
+
+        <form method="GET"
+              action="{{ route('payment-vouchers.index') }}">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label">
+                        Search
+                    </label>
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Voucher No / Payee / Reference"
+                        value="{{ request('search') }}">
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label">
+                        Status
+                    </label>
+
+                    <select
+                        name="status"
+                        class="form-select">
+
+                        <option value="">All</option>
+
+                        <option value="Pending"
+                            @selected(request('status')=='Pending')>
+                            Pending
+                        </option>
+
+                        <option value="Approved"
+                            @selected(request('status')=='Approved')>
+                            Approved
+                        </option>
+
+                        <option value="Cancelled"
+                            @selected(request('status')=='Cancelled')>
+                            Cancelled
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label">
+                        Mode
+                    </label>
+
+                    <select
+                        name="payment_mode"
+                        class="form-select">
+
+                        <option value="">All</option>
+
+                        <option value="Cash">Cash</option>
+                        <option value="Cheque">Cheque</option>
+                        <option value="UPI">UPI</option>
+                        <option value="NEFT">NEFT</option>
+                        <option value="RTGS">RTGS</option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label">
+                        From
+                    </label>
+
+                    <input
+                        type="date"
+                        name="from"
+                        class="form-control"
+                        value="{{ request('from') }}">
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label">
+                        To
+                    </label>
+
+                    <input
+                        type="date"
+                        name="to"
+                        class="form-control"
+                        value="{{ request('to') }}">
+
+                </div>
+
+            </div>
+
+            <div class="mt-3">
+
+                <button
+                    class="btn btn-primary">
+
+                    <i class="fas fa-search"></i>
+                    Search
+
+                </button>
+
+                <a href="{{ route('payment-vouchers.index') }}"
+                   class="btn btn-secondary">
+
+                    Reset
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<div class="card shadow-sm">
+
+    <div class="card-header bg-white">
+
+        <strong>Payment Voucher Register</strong>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table table-hover align-middle mb-0">
 
             <thead class="table-light">
 
@@ -37,129 +250,161 @@
 
                 <th>Payee</th>
 
-                <th>Expense Head</th>
-
                 <th>Amount</th>
 
                 <th>Status</th>
 
-                <th width="220">Actions</th>
+                <th width="180">Actions</th>
 
             </tr>
 
             </thead>
 
-            <tbody>
+           <tbody>
 
-            @forelse($paymentVouchers as $voucher)
+@forelse($paymentVouchers as $voucher)
 
-                <tr>
+<tr>
 
-                    <td>{{ $voucher->voucher_no }}</td>
+    <td>
+        <strong>{{ $voucher->voucher_no }}</strong>
+    </td>
 
-                    <td>{{ $voucher->voucher_date->format('d-m-Y') }}</td>
+    <td>
+        {{ $voucher->voucher_date->format('d-M-Y') }}
+    </td>
 
-                    <td>{{ $voucher->payee_name }}</td>
+    <td>
 
-                    <td>{{ $voucher->accountHead->account_name ?? '-' }}</td>
+        <strong>{{ $voucher->payee_name }}</strong>
 
-                    <td class="text-end">
-                        ₹ {{ number_format($voucher->amount,2) }}
-                    </td>
+        @if($voucher->reference_no)
 
-                    <td>
+            <br>
 
-                        @if($voucher->status=='Approved')
+            <small class="text-muted">
 
-                            <span class="badge bg-success">
-                                Approved
-                            </span>
+                Ref :
+                {{ $voucher->reference_no }}
 
-                        @elseif($voucher->status=='Draft')
+            </small>
 
-                            <span class="badge bg-warning">
-                                Draft
-                            </span>
+        @endif
 
-                        @else
+    </td>
 
-                            <span class="badge bg-danger">
-                                Cancelled
-                            </span>
+    <td>
 
-                        @endif
+        {{ $voucher->accountHead->account_name }}
 
-                    </td>
+    </td>
 
-                    <td>
+    <td class="text-end">
 
-                        <a href="{{ route('payment-vouchers.show',$voucher) }}"
-                           class="btn btn-info btn-sm">
+        ₹ {{ number_format($voucher->amount,2) }}
 
-                            <i class="fas fa-eye"></i>
+    </td>
 
-                        </a>
+    <td>
 
-                        <a href="{{ route('payment-vouchers.edit',$voucher) }}"
-                           class="btn btn-primary btn-sm">
+        @switch($voucher->status)
 
-                            <i class="fas fa-edit"></i>
+            @case('Approved')
 
-                        </a>
+                <span class="badge bg-success">
 
-                        <a href="{{ route('payment-vouchers.pdf',$voucher) }}"
-                           class="btn btn-danger btn-sm">
+                    Approved
 
-                            <i class="fas fa-file-pdf"></i>
+                </span>
 
-                        </a>
+                @break
 
-                        @if($voucher->status!='Approved')
+            @case('Cancelled')
 
-                        <form
-                            action="{{ route('payment-vouchers.approve',$voucher) }}"
-                            method="POST"
-                            style="display:inline">
+                <span class="badge bg-danger">
 
-                            @csrf
+                    Cancelled
 
-                            <button class="btn btn-success btn-sm">
+                </span>
 
-                                <i class="fas fa-check"></i>
+                @break
 
-                            </button>
+            @default
 
-                        </form>
+                <span class="badge bg-warning text-dark">
 
-                        @endif
+                    Pending
 
-                    </td>
+                </span>
 
-                </tr>
+        @endswitch
 
-            @empty
+    </td>
 
-                <tr>
+    <td width="170">
 
-                    <td colspan="7" class="text-center">
+        <div class="btn-group">
 
-                        No Payment Vouchers Found
+            <a href="{{ route('payment-vouchers.show',$voucher) }}"
+               class="btn btn-sm btn-info">
 
-                    </td>
+                <i class="fas fa-eye"></i>
 
-                </tr>
+            </a>
 
-            @endforelse
+            <a href="{{ route('payment-vouchers.edit',$voucher) }}"
+               class="btn btn-sm btn-warning">
 
-            </tbody>
+                <i class="fas fa-edit"></i>
+
+            </a>
+
+            <a href="{{ route('payment-vouchers.pdf',$voucher) }}"
+               class="btn btn-sm btn-secondary"
+               target="_blank">
+
+                <i class="fas fa-print"></i>
+
+            </a>
+
+        </div>
+
+    </td>
+
+</tr>
+
+@empty
+
+<tr>
+
+    <td colspan="7"
+        class="text-center py-5">
+
+        <i class="fas fa-file-invoice-dollar fa-3x text-secondary mb-3"></i>
+
+        <h5>No Payment Vouchers Found</h5>
+
+        <p class="text-muted">
+
+            Click New Voucher to create your first voucher.
+
+        </p>
+
+    </td>
+
+</tr>
+
+@endforelse
+
+</tbody>
 
         </table>
 
-        <div class="mt-3">
+    </div>
 
-            {{ $paymentVouchers->links() }}
+    <div class="card-footer bg-white">
 
-        </div>
+        {{ $paymentVouchers->links() }}
 
     </div>
 
