@@ -2,22 +2,50 @@
 
     <!-- Logo -->
 
-    <div class="sidebar-header text-center border-bottom">
+   <div class="sidebar-header text-center border-bottom py-4">
 
-        <img src="{{ asset('images/logo.png') }}"
-             class="sidebar-logo mb-2"
-             alt="Logo">
+    <img src="{{ asset('images/logo.png') }}"
+         class="sidebar-logo mb-3"
+         alt="Logo">
 
-        <h5 class="mb-0 text-warning fw-bold">
-            Ramamandira Trust
-        </h5>
+    <h5 class="fw-bold text-warning mb-1">
+        Ramamandira Trust
+    </h5>
 
-        <small class="text-light">
-            ERP System
-        </small>
+    <small class="text-light d-block">
+        Honnavally
+    </small>
+
+    <small class="text-secondary">
+        Trust Management ERP
+    </small>
+
+</div>
+
+       
+
+    
+<div class="user-panel text-center py-3 border-bottom">
+
+    <div class="mb-2">
+
+        <i class="fas fa-user-circle fa-3x text-warning"></i>
 
     </div>
 
+    <div class="fw-bold text-white">
+
+        {{ auth()->user()->name ?? 'Administrator' }}
+
+    </div>
+
+    <small class="text-secondary">
+
+        System Administrator
+
+    </small>
+
+</div>
     <div class="sidebar-menu">
 
         <!-- Dashboard -->

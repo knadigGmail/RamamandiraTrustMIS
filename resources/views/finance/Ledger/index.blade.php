@@ -10,7 +10,13 @@
 
         <div>
 
-            <h3>General Ledger</h3>
+            <h2 class="fw-bold">
+
+    <i class="fas fa-book text-primary"></i>
+
+    General Ledger
+
+</h2>
 
             <small class="text-muted">
                 Ledger entries generated from approved vouchers
@@ -136,74 +142,111 @@
                 Reset
 
             </a>
+<a href="#" class="btn btn-success">
 
+    <i class="fas fa-file-excel"></i>
+
+    Excel
+
+</a>
+
+<a href="#" class="btn btn-danger">
+
+    <i class="fas fa-file-pdf"></i>
+
+    PDF
+
+</a>
+
+<a href="#" class="btn btn-dark">
+
+    <i class="fas fa-print"></i>
+
+    Print
+
+</a>
         </div>
 
     </form>
 
     <div class="card shadow">
 
+    <div class="card-header bg-primary text-white">
+
+        <i class="fas fa-book"></i>
+
+        General Ledger
+
+    </div>
+
         <div class="table-responsive">
 
             <table class="table table-bordered table-striped mb-0">
 
-                <thead class="table-dark">
+              <thead class="table-dark">
+<tr>
 
-                <tr>
+    <th>Date</th>
 
-                    <th>Date</th>
+    <th>Voucher</th>
 
-                    <th>Voucher</th>
+    <th>Account Head</th>
 
-                    <th>Account Head</th>
+    <th>Financial Account</th>
 
-                    <th>Financial Account</th>
+    <th>Narration</th>
 
-                    <th>Narration</th>
+    <th class="text-end">Debit</th>
 
-                    <th class="text-end">Debit</th>
+    <th class="text-end">Credit</th>
 
-                    <th class="text-end">Credit</th>
+    <th class="text-end">Balance</th>
 
-                </tr>
+</tr>
+</thead>
 
-                </thead>
+ <tbody>
 
-                <tbody>
+@php
+    $totalDebit = 0;
+    $totalCredit = 0;
+    $balance = 0;
+@endphp
 
-                @php
+@forelse($entries as $entry)
 
-                    $totalDebit=0;
-
-                    $totalCredit=0;
-
-                @endphp
-
-                @forelse($entries as $entry)
-
-                    @php
-
-                        $totalDebit+=$entry->debit;
-
-                        $totalCredit+=$entry->credit;
-
-                    @endphp
+    @php
+        $totalDebit += $entry->debit;
+        $totalCredit += $entry->credit;
+        $balance += $entry->debit;
+        $balance -= $entry->credit;
+    @endphp
 
                     <tr>
 
                         <td>
 
-                            {{ $entry->entry_date->format('d-m-Y') }}
+                           {{ \Carbon\Carbon::parse($entry->voucher_date)->format('d-m-Y') }}
 
                         </td>
 
-                        <td>
+                       <td>
 
-                            {{ $entry->voucher_type }}
+    <span class="badge bg-primary">
 
-                            #{{ $entry->voucher_id }}
+        {{ $entry->voucher_type }}
 
-                        </td>
+    </span>
+
+    <br>
+
+    <small class="text-muted">
+
+        {{ $entry->voucher_no }}
+
+    </small>
+
+</td>
 
                         <td>
 
@@ -223,25 +266,29 @@
 
                         </td>
 
-                        <td class="text-end">
+                      <td class="text-end text-success fw-semibold">
 
-                            {{ number_format($entry->debit,2) }}
+    {{ $entry->debit > 0 ? number_format($entry->debit,2) : '-' }}
 
-                        </td>
+</td>
 
-                        <td class="text-end">
+                      <td class="text-end text-danger fw-semibold">
 
-                            {{ number_format($entry->credit,2) }}
+    {{ $entry->credit > 0 ? number_format($entry->credit,2) : '-' }}
 
-                        </td>
+</td>
+<td class="text-end fw-bold {{ $balance >= 0 ? 'text-success' : 'text-danger' }}">
 
+    {{ number_format($balance,2) }}
+
+</td>
                     </tr>
 
                 @empty
 
                     <tr>
 
-                        <td colspan="7"
+                        <td colspan="8"
                             class="text-center">
 
                             No Ledger Entries Found
@@ -254,32 +301,37 @@
 
                 </tbody>
 
-                <tfoot class="table-light">
+               <tfoot class="table-light">
 
-                <tr>
+<tr>
 
-                    <th colspan="5"
-                        class="text-end">
+    <th colspan="5" class="text-end">
 
-                        Totals
+        Totals
 
-                    </th>
+    </th>
 
-                    <th class="text-end">
+    <th class="text-end text-success">
 
-                        {{ number_format($totalDebit,2) }}
+        {{ number_format($totalDebit,2) }}
 
-                    </th>
+    </th>
 
-                    <th class="text-end">
+    <th class="text-end text-danger">
 
-                        {{ number_format($totalCredit,2) }}
+        {{ number_format($totalCredit,2) }}
 
-                    </th>
+    </th>
 
-                </tr>
+    <th class="text-end fw-bold">
 
-                </tfoot>
+        {{ number_format($balance,2) }}
+
+    </th>
+
+</tr>
+
+</tfoot>
 
             </table>
 

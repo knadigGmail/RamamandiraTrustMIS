@@ -315,3 +315,123 @@ body{
     font-weight:600;
 
 }
+/* ===========================
+   Navbar
+=========================== */
+
+.navbar{
+    min-height:70px;
+}
+
+.navbar h5{
+    margin:0;
+    color:#5D4037;
+}
+
+.navbar .dropdown-toggle{
+    border-radius:10px;
+}
+
+.navbar .dropdown-menu{
+    border-radius:12px;
+}
+
+/*=====================================
+SIDEBAR
+======================================*/
+
+.sidebar{
+
+    width:270px;
+
+    min-height:100vh;
+
+    background:#1e293b;
+
+}
+
+.sidebar-header{
+
+    background:#111827;
+
+}
+
+.sidebar-logo{
+
+    width:75px;
+
+    height:75px;
+
+    border-radius:50%;
+
+    background:white;
+
+    padding:6px;
+
+}
+
+.user-panel{
+
+    background:#1f2937;
+
+}
+
+.sidebar-title{
+
+    color:#94a3b8;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    letter-spacing:1px;
+
+    text-transform:uppercase;
+
+    margin:18px 15px 8px;
+
+}
+
+.sidebar-link{
+
+    display:block;
+
+    color:#d1d5db;
+
+    padding:12px 18px;
+
+    text-decoration:none;
+
+    border-left:4px solid transparent;
+
+    transition:.25s;
+
+}
+
+.sidebar-link:hover{
+
+    background:#334155;
+
+    color:white;
+
+    border-left:4px solid #f59e0b;
+
+}
+
+.sidebar-link.active{
+
+    background:#475569;
+
+    color:white;
+
+    border-left:4px solid #f59e0b;
+
+}
+
+.sidebar-link i{
+
+    width:22px;
+
+    text-align:center;
+
+}

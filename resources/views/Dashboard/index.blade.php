@@ -1,33 +1,26 @@
 @extends('layouts.app')
 
 @section('title','Dashboard')
-
 @section('page-title','Dashboard')
 
 @section('content')
 
 <div class="container-fluid">
 
-    <!-- Welcome -->
-
     <div class="row mb-4">
 
         <div class="col-md-12">
 
-            <div class="card shadow-sm border-0">
+            <div class="card shadow-sm">
 
                 <div class="card-body">
 
-                    <h3 class="fw-bold mb-1">
-
+                    <h3 class="fw-bold">
                         Welcome, {{ Auth::user()->name }}
-
                     </h3>
 
-                    <p class="text-muted mb-0">
-
+                    <p class="text-muted">
                         Ramamandira Trust ERP Dashboard
-
                     </p>
 
                 </div>
@@ -38,29 +31,17 @@
 
     </div>
 
-    <!-- Statistics -->
-
     <div class="row">
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 mb-4">
 
-            <div class="card stat-card bg-primary text-white shadow">
+            <div class="card stat-card bg-primary text-white">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <h6>Bookings</h6>
 
-                        <div>
-
-                            <h6>Bookings</h6>
-
-                            <h2>{{ \App\Models\Booking::count() }}</h2>
-
-                        </div>
-
-                        <i class="fas fa-calendar-check fa-3x opacity-50"></i>
-
-                    </div>
+                    <h2>{{ $bookings }}</h2>
 
                 </div>
 
@@ -68,25 +49,15 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 mb-4">
 
-            <div class="card stat-card bg-success text-white shadow">
+            <div class="card stat-card bg-success text-white">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <h6>Trustees</h6>
 
-                        <div>
-
-                            <h6>Donors</h6>
-
-                            <h2>{{ \App\Models\Donor::count() }}</h2>
-
-                        </div>
-
-                        <i class="fas fa-hand-holding-heart fa-3x opacity-50"></i>
-
-                    </div>
+                    <h2>{{ $trustees }}</h2>
 
                 </div>
 
@@ -94,25 +65,15 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 mb-4">
 
-            <div class="card stat-card bg-warning text-dark shadow">
+            <div class="card stat-card bg-warning">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <h6>Employees</h6>
 
-                        <div>
-
-                            <h6>Trustees</h6>
-
-                            <h2>{{ \App\Models\Trustee::count() }}</h2>
-
-                        </div>
-
-                        <i class="fas fa-users fa-3x opacity-50"></i>
-
-                    </div>
+                    <h2>{{ $employees }}</h2>
 
                 </div>
 
@@ -120,25 +81,15 @@
 
         </div>
 
-        <div class="col-lg-3 col-md-6 mb-4">
+        <div class="col-lg-3 mb-4">
 
-            <div class="card stat-card bg-danger text-white shadow">
+            <div class="card stat-card bg-danger text-white">
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between">
+                    <h6>Receipt Vouchers</h6>
 
-                        <div>
-
-                            <h6>Payment Vouchers</h6>
-
-                            <h2>{{ \App\Models\PaymentVoucher::count() }}</h2>
-
-                        </div>
-
-                        <i class="fas fa-file-invoice-dollar fa-3x opacity-50"></i>
-
-                    </div>
+                    <h2>{{ $receiptVouchers }}</h2>
 
                 </div>
 
@@ -148,52 +99,49 @@
 
     </div>
 
-    <!-- Quick Actions -->
-
     <div class="row">
 
         <div class="col-md-6">
 
-            <div class="card shadow-sm">
+            <div class="card">
 
-                <div class="card-header bg-white">
-
-                    <strong>Quick Actions</strong>
-
+                <div class="card-header">
+                    Today's Summary
                 </div>
 
                 <div class="card-body">
 
-                    <div class="d-grid gap-2">
+                    <table class="table">
 
-                        <a href="{{ route('bookings.create') }}"
-                           class="btn btn-primary">
+                        <tr>
+                            <th>Today's Receipts</th>
+                            <td class="text-end">
+                                ₹ {{ number_format($todayReceipts,2) }}
+                            </td>
+                        </tr>
 
-                            <i class="fas fa-calendar-plus me-2"></i>
+                        <tr>
+                            <th>Today's Payments</th>
+                            <td class="text-end">
+                                ₹ {{ number_format($todayPayments,2) }}
+                            </td>
+                        </tr>
 
-                            New Booking
+                        <tr>
+                            <th>This Month Receipts</th>
+                            <td class="text-end">
+                                ₹ {{ number_format($monthReceipts,2) }}
+                            </td>
+                        </tr>
 
-                        </a>
+                        <tr>
+                            <th>This Month Payments</th>
+                            <td class="text-end">
+                                ₹ {{ number_format($monthPayments,2) }}
+                            </td>
+                        </tr>
 
-                        <a href="{{ route('donations.create') }}"
-                           class="btn btn-success">
-
-                            <i class="fas fa-hand-holding-heart me-2"></i>
-
-                            New Donation
-
-                        </a>
-
-                        <a href="{{ route('payment-vouchers.create') }}"
-                           class="btn btn-warning">
-
-                            <i class="fas fa-file-invoice-dollar me-2"></i>
-
-                            Payment Voucher
-
-                        </a>
-
-                    </div>
+                    </table>
 
                 </div>
 
@@ -201,16 +149,12 @@
 
         </div>
 
-        <!-- Recent Payment Vouchers -->
-
         <div class="col-md-6">
 
-            <div class="card shadow-sm">
+            <div class="card">
 
-                <div class="card-header bg-white">
-
-                    <strong>Latest Payment Vouchers</strong>
-
+                <div class="card-header">
+                    Recent Receipt Vouchers
                 </div>
 
                 <div class="card-body p-0">
@@ -233,7 +177,7 @@
 
                         <tbody>
 
-                        @foreach(\App\Models\PaymentVoucher::latest()->take(5)->get() as $voucher)
+                        @foreach($recentReceipts as $voucher)
 
                             <tr>
 

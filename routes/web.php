@@ -145,17 +145,17 @@ Route::get(
 )->name('payment-vouchers.pdf');
 
 
-    Route::get(
-    '/donations/{donation}/receipt',
-    [DonationController::class, 'receipt']
-)->name('donations.receipt');
+   
 Route::resource('account-heads', App\Http\Controllers\AccountHeadController::class);
-});
 
 Route::get(
     '/ledger',
     [App\Http\Controllers\LedgerController::class, 'index']
 )->name('ledger.index');
+
+});
+
+
 Route::view('/', 'website.home')->name('home');
 
 Route::view('/about', 'website.about')->name('about');

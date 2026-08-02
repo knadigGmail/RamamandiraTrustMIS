@@ -12,31 +12,27 @@ return new class extends Migration
 
             $table->id();
 
+            $table->date('voucher_date');
+
             $table->string('voucher_type',30);
 
-            $table->unsignedBigInteger('voucher_id');
+            $table->string('voucher_no',50);
 
-            $table->date('entry_date');
+            $table->foreignId('account_head_id')->constrained();
 
-            $table->foreignId('account_head_id')
-                  ->constrained()
-                  ->cascadeOnDelete();
+            $table->foreignId('financial_account_id')->nullable()->constrained();
 
-            $table->foreignId('financial_account_id')
-                  ->nullable()
-                  ->constrained()
-                  ->nullOnDelete();
+            $table->decimal('debit',15,2)->default(0);
 
-            $table->decimal('debit',14,2)->default(0);
+            $table->decimal('credit',15,2)->default(0);
 
-            $table->decimal('credit',14,2)->default(0);
+            $table->string('reference')->nullable();
 
             $table->text('narration')->nullable();
 
-            $table->timestamps();
+            $table->foreignId('created_by')->nullable()->constrained('users');
 
-            $table->index(['voucher_type','voucher_id']);
-            $table->index('entry_date');
+            $table->timestamps();
 
         });
     }

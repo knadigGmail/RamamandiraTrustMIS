@@ -3,135 +3,60 @@
 namespace App\Services;
 
 use App\Models\Booking;
-use App\Models\Customer;
-use App\Models\Hall;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 use App\Models\Donation;
+use App\Models\PaymentVoucher;
+use App\Models\ReceiptVoucher;
+use App\Models\Trustee;
+use App\Models\Employee;
 use App\Models\Donor;
-use App\Models\Seva;
+use App\Models\Customer;
+
 class DashboardService
 {
     public function getDashboardData(): array
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Booking Chart Data
-        |--------------------------------------------------------------------------
-        */
-
-        $bookingChart = Booking::selectRaw('MONTH(booking_date) as month, COUNT(*) as total')
-            ->whereYear('booking_date', now()->year)
-            ->groupBy(DB::raw('MONTH(booking_date)'))
-            ->orderBy('month')
-            ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Return Dashboard Data
-        |--------------------------------------------------------------------------
-        */
-
         return [
 
-          'totalBookings' => Cache::remember(
-    'dashboard.totalBookings',
-    300,
-    fn () => Booking::count()
-),
+            'bookings' => Booking::count(),
 
-            'todayBookings' => Booking::whereDate(
-                'booking_date',
-                Carbon::today()
-            )->count(),
+            'trustees' => Trustee::count(),
 
-            'upcomingBookings' => Booking::whereDate(
-                'function_date',
-                '>=',
-                Carbon::today()
-            )->count(),
+            'employees' => Employee::count(),
 
-            'cancelledBookings' => Booking::where(
-                'status',
-                'Cancelled'
-            )->count(),
+            'customers' => Customer::count(),
 
-            'totalCustomers' => Customer::count(),
+            'donors' => Donor::count(),
 
-            'totalHalls' => Hall::count(),
+            'paymentVouchers' => PaymentVoucher::count(),
 
-            'activeHalls' => Hall::where(
-                'status',
-                true
-            )->count(),
-'totalDonors' => Donor::count(),
+            'receiptVouchers' => ReceiptVoucher::count(),
 
-'totalSevas' => Seva::count(),
+            'todayReceipts' => ReceiptVoucher::whereDate(
+                'voucher_date',
+                today()
+            )->sum('amount'),
 
-'todayDonations' => Donation::whereDate(
-    'receipt_date',
-    today()
-)->sum('amount'),
+            'todayPayments' => PaymentVoucher::whereDate(
+                'voucher_date',
+                today()
+            )->sum('amount'),
 
-'monthDonations' => Donation::whereYear(
-    'receipt_date',
-    now()->year
-)
-->whereMonth(
-    'receipt_date',
-    now()->month
-)
-->sum('amount'),
+'monthReceipts' => ReceiptVoucher::whereYear('voucher_date', now()->year)
+    ->whereMonth('voucher_date', now()->month)
+    ->sum('amount'),
 
-'recentDonations' => Donation::latest()
-    ->take(5)
-    ->get(),
-            'monthlyRevenue' => Booking::whereYear('booking_date', now()->year)
-                ->whereMonth('booking_date', now()->month)
-                ->sum('hall_rent'),
+'monthPayments' => PaymentVoucher::whereYear('voucher_date', now()->year)
+    ->whereMonth('voucher_date', now()->month)
+    ->sum('amount'),
 
-            'outstandingAmount' => Booking::sum('balance_amount'),
-
-            'recentBookings' => Booking::latest()
+            'recentReceipts' => ReceiptVoucher::latest()
                 ->take(5)
                 ->get(),
 
-            /*
-            |--------------------------------------------------------------------------
-            | Chart Data
-            |--------------------------------------------------------------------------
-            */
+            'recentPayments' => PaymentVoucher::latest()
+                ->take(5)
+                ->get(),
 
-            'bookingChartLabels' => $bookingChart->map(function ($item) {
-                return date('M', mktime(0, 0, 0, $item->month, 1));
-            }),
-
-            'bookingChartData' => $bookingChart->pluck('total'),
-
-            'donationChartLabels' => $donationChart->map(function ($item) {
-    return date('M', mktime(0, 0, 0, $item->month, 1));
-}),
-
-'donationChartData' => $donationChart->pluck('total'),
-            
         ];
-        
-        /*
-|--------------------------------------------------------------------------
-| Donation Chart Data
-|--------------------------------------------------------------------------
-*/
-
-$donationChart = Donation::selectRaw(
-    'MONTH(receipt_date) as month,
-     SUM(amount) as total'
-)
-->whereYear(
-    'receipt_date',
-    now()->year
-)
-->groupBy(DB::raw('MONTH(receipt_date)'))
-->orderBy('month')
-->get();
     }
 }

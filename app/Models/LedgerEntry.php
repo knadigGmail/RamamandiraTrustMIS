@@ -8,11 +8,11 @@ class LedgerEntry extends Model
 {
     protected $fillable = [
 
+        'voucher_date',
+
         'voucher_type',
 
-        'voucher_id',
-
-        'entry_date',
+        'voucher_no',
 
         'account_head_id',
 
@@ -22,7 +22,11 @@ class LedgerEntry extends Model
 
         'credit',
 
+        'reference',
+
         'narration',
+
+        'created_by'
 
     ];
 
@@ -36,4 +40,8 @@ class LedgerEntry extends Model
         return $this->belongsTo(FinancialAccount::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
 }
